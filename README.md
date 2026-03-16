@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SnapPull - Social Media Video Downloader
+
+A fast, minimal, SEO-optimized social media downloader built with Next.js 16, TailwindCSS 4, and TypeScript.
+
+## Features
+
+- 10 dedicated downloader tools (Instagram, YouTube, TikTok, Twitter/X, Facebook)
+- 15 programmatic SEO pages targeting long-tail keywords
+- 20 SEO blog articles with FAQ schema markup
+- Apple-style minimal UI with dark mode
+- Mobile-first responsive design
+- JSON-LD structured data (FAQ, HowTo, WebApplication, Article, Breadcrumb)
+- Auto-generated sitemap.xml and robots.txt
+- Ad-ready layout (banner, sidebar, in-content slots)
+- Paste-and-detect URL input with loading states
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router, Static Generation)
+- **Styling**: TailwindCSS 4
+- **Language**: TypeScript
+- **Deployment**: Vercel
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Build for production
+npm run build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Start production server
+npm start
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/
+│   ├── page.tsx                    # Homepage
+│   ├── layout.tsx                  # Root layout
+│   ├── not-found.tsx               # 404 page
+│   ├── sitemap.ts                  # Dynamic sitemap
+│   ├── api/download/route.ts       # Download API
+│   ├── (tools)/[slug]/page.tsx     # Tool + SEO pages (25 pages)
+│   └── blog/
+│       ├── page.tsx                # Blog index
+│       └── [slug]/page.tsx         # Blog articles (20 pages)
+├── components/                     # Reusable UI components
+├── lib/                            # Data and utilities
+│   ├── tools.ts                    # 10 tool definitions
+│   ├── seo-pages.ts                # 15 SEO page variations
+│   ├── blog-data.ts                # 20 blog articles
+│   └── schemas.ts                  # JSON-LD generators
+└── types/                          # TypeScript interfaces
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Copy `.env.example` to `.env.local`:
 
-## Deploy on Vercel
+```bash
+cp .env.example .env.local
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_SITE_URL` | Production URL for SEO meta tags |
+| `NEXT_PUBLIC_ADSENSE_CLIENT_ID` | Google AdSense client ID (optional) |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics ID (optional) |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment on Vercel
+
+1. Push to GitHub
+2. Import in Vercel
+3. Set environment variables
+4. Deploy
+
+The project uses static generation — 52 pages are pre-rendered at build time.
+
+## API
+
+The download API (`/api/download`) accepts POST requests:
+
+```json
+{
+  "url": "https://www.instagram.com/reel/...",
+  "platform": "instagram"
+}
+```
+
+Currently returns placeholder responses. Integrate real download services by adding platform-specific modules in `src/lib/`.
+
+## SEO
+
+- All pages have unique meta titles and descriptions
+- FAQ schema on every tool and blog page
+- HowTo schema on tool pages
+- WebApplication schema on homepage
+- Breadcrumb schema on all inner pages
+- Canonical URLs on every page
+- Auto-generated sitemap.xml

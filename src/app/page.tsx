@@ -1,65 +1,115 @@
-import Image from "next/image";
+import DownloadForm from '@/components/DownloadForm';
+import PlatformIcons from '@/components/PlatformIcons';
+import FAQ from '@/components/FAQ';
+import AdSlot from '@/components/AdSlot';
+import Link from 'next/link';
+import { tools } from '@/lib/tools';
+import { generateWebAppSchema, generateFAQSchema } from '@/lib/schemas';
 
-export default function Home() {
+const homeFaqs = [
+  { question: 'What is SnapPull?', answer: 'SnapPull is a free online tool that lets you download videos, photos, and audio from popular social media platforms including Instagram, YouTube, TikTok, Twitter/X, and Facebook.' },
+  { question: 'Is SnapPull free to use?', answer: 'Yes, SnapPull is completely free. There are no hidden fees, subscriptions, or premium tiers. All features are available to everyone.' },
+  { question: 'Do I need to install anything?', answer: 'No. SnapPull works entirely in your browser. There is no app or software to install.' },
+  { question: 'What platforms are supported?', answer: 'SnapPull supports Instagram (Reels, videos, photos, audio), YouTube (videos, MP3), TikTok (with and without watermark), Twitter/X, and Facebook.' },
+  { question: 'Is it safe to use SnapPull?', answer: 'Absolutely. SnapPull does not require any login credentials or personal information. Your downloads are processed securely.' },
+  { question: 'Can I use SnapPull on my phone?', answer: 'Yes, SnapPull is fully responsive and works perfectly on iPhone, Android, tablets, and desktop computers.' },
+];
+
+const features = [
+  { title: 'Lightning Fast', description: 'Downloads start in seconds. No waiting around.', icon: '⚡' },
+  { title: 'HD Quality', description: 'Save videos in their original resolution up to 4K.', icon: '🎬' },
+  { title: 'No Registration', description: 'Start downloading immediately. No account needed.', icon: '🔓' },
+  { title: 'All Platforms', description: 'Instagram, YouTube, TikTok, Twitter, Facebook.', icon: '🌐' },
+];
+
+export default function HomePage() {
+  const webAppSchema = generateWebAppSchema(
+    'SnapPull',
+    'Free social media video downloader for Instagram, YouTube, TikTok, Twitter, and Facebook',
+    'https://snappull.com',
+  );
+  const faqSchema = generateFAQSchema(homeFaqs);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+
+      <AdSlot position="banner" className="max-w-6xl mx-auto mt-4 px-4" />
+
+      {/* Hero */}
+      <section className="pt-16 md:pt-24 pb-12 px-4">
+        <div className="max-w-3xl mx-auto text-center">
+          <h1 className="text-4xl md:text-6xl font-semibold tracking-tight leading-tight mb-4">
+            Download Videos from{' '}
+            <span className="text-accent">Instagram</span>,{' '}
+            <span className="text-accent">YouTube</span>,{' '}
+            <span className="text-accent">TikTok</span>{' '}
+            and more
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-lg text-muted mb-10 max-w-xl mx-auto">
+            Paste any social media link and download videos, photos, and audio in HD quality. Free and instant.
           </p>
+          <DownloadForm />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Platform icons */}
+      <section className="pb-16 px-4">
+        <PlatformIcons />
+      </section>
+
+      {/* Features */}
+      <section className="py-16 px-4 bg-card/50">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-semibold text-center mb-10">Why Choose SnapPull</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {features.map((f) => (
+              <div key={f.title} className="text-center">
+                <div className="text-3xl mb-3">{f.icon}</div>
+                <h3 className="font-semibold text-sm mb-1">{f.title}</h3>
+                <p className="text-xs text-muted">{f.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Popular tools */}
+      <section className="py-16 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-semibold text-center mb-10">Popular Tools</h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            {tools.map((tool) => (
+              <Link
+                key={tool.slug}
+                href={`/${tool.slug}`}
+                className="flex items-center gap-4 p-4 rounded-xl border border-border hover:bg-card transition-colors group"
+              >
+                <div
+                  className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+                  style={{ backgroundColor: `${tool.color}15` }}
+                >
+                  <span style={{ color: tool.color }} className="text-lg font-bold">
+                    {tool.platform[0].toUpperCase()}
+                  </span>
+                </div>
+                <div>
+                  <h3 className="font-medium text-sm group-hover:text-accent transition-colors">{tool.title}</h3>
+                  <p className="text-xs text-muted mt-0.5 line-clamp-1">{tool.description}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <AdSlot position="in-content" className="max-w-3xl mx-auto px-4" />
+
+      {/* FAQ */}
+      <section className="py-16 px-4">
+        <FAQ items={homeFaqs} />
+      </section>
+    </>
   );
 }

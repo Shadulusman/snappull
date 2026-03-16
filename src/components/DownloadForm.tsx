@@ -15,14 +15,15 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
   const [error, setError] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = useCallback(async () => {
-    if (!url.trim()) {
+  const submitUrl = useCallback(async (inputUrl: string) => {
+    const trimmed = inputUrl.trim();
+    if (!trimmed) {
       setError('Please paste a valid link');
       return;
     }
 
     try {
-      new URL(url.trim());
+      new URL(trimmed);
     } catch {
       setError('Please enter a valid URL');
       return;
@@ -36,7 +37,7 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
       const res = await fetch('/api/download', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: url.trim(), platform }),
+        body: JSON.stringify({ url: trimmed, platform }),
       });
       const data: DownloadResult = await res.json();
 
@@ -50,17 +51,22 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
     } finally {
       setLoading(false);
     }
-  }, [url, platform]);
+  }, [platform]);
+
+  const handleSubmit = useCallback(() => {
+    submitUrl(url);
+  }, [url, submitUrl]);
 
   const handlePaste = useCallback((e: React.ClipboardEvent) => {
     const text = e.clipboardData.getData('text');
     try {
       new URL(text);
-      setTimeout(() => handleSubmit(), 100);
+      // Use the pasted text directly instead of relying on state
+      setTimeout(() => submitUrl(text), 50);
     } catch {
       // not a URL, just let it paste normally
     }
-  }, [handleSubmit]);
+  }, [submitUrl]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') handleSubmit();

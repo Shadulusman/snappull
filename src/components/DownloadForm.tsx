@@ -13,7 +13,6 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<DownloadResult | null>(null);
   const [error, setError] = useState('');
-  const [downloading, setDownloading] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const submitUrl = useCallback(async (inputUrl: string) => {
@@ -77,23 +76,8 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
     return `/api/proxy?url=${encodeURIComponent(mediaUrl)}&filename=${encodeURIComponent(filename)}`;
   };
 
-  const handleDownload = useCallback((proxyUrl: string, label: string) => {
-    setDownloading(label);
+  // Unused — download links are now plain <a> tags so iOS Safari handles them natively
 
-    // Use a hidden iframe to trigger the download
-    // This works reliably on iOS Safari, Android, and desktop
-    // The proxy returns Content-Disposition: attachment which forces a save dialog
-    const iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = proxyUrl;
-    document.body.appendChild(iframe);
-
-    // Clean up after a delay
-    setTimeout(() => {
-      document.body.removeChild(iframe);
-      setDownloading(null);
-    }, 10000);
-  }, []);
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -154,26 +138,20 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
               {result.qualities && result.qualities.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2">
                   {result.qualities.map((q) => (
-                    <button
+                    <a
                       key={q.label}
-                      onClick={() => handleDownload(getProxyUrl(q.url, q.label), q.label)}
-                      disabled={downloading === q.label}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent hover:bg-accent-hover text-white text-xs rounded-lg transition-colors disabled:opacity-60"
+                      href={getProxyUrl(q.url, q.label)}
+                      download
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent hover:bg-accent-hover text-white text-xs rounded-lg transition-colors"
                     >
-                      {downloading === q.label ? (
-                        <svg className="animate-spin w-3 h-3" viewBox="0 0 24 24" fill="none">
-                          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="32" strokeLinecap="round" />
-                        </svg>
-                      ) : (
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                          <polyline points="7 10 12 15 17 10" />
-                          <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                      )}
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                      </svg>
                       {q.label} {q.format.toUpperCase()}
                       {q.size && <span className="opacity-70">({q.size})</span>}
-                    </button>
+                    </a>
                   ))}
                 </div>
               )}

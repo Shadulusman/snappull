@@ -97,7 +97,7 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <div className="relative flex items-center bg-card rounded-2xl border border-border focus-within:border-accent transition-colors shadow-sm">
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 sm:items-center bg-card rounded-2xl border border-border focus-within:border-accent transition-colors shadow-sm p-2 sm:p-0">
         <input
           ref={inputRef}
           type="url"
@@ -106,13 +106,13 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
           onPaste={handlePaste}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="flex-1 bg-transparent px-5 py-4 text-base placeholder:text-muted outline-none"
+          className="flex-1 bg-transparent px-3 sm:px-5 py-3 sm:py-4 text-base placeholder:text-muted outline-none min-w-0"
           aria-label="Video URL"
         />
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="mr-2 px-6 py-2.5 bg-accent hover:bg-accent-hover text-white rounded-xl text-sm font-medium transition-all disabled:opacity-50 flex items-center gap-2 shrink-0"
+          className="w-full sm:w-auto sm:mr-2 px-6 py-3 sm:py-2.5 bg-accent hover:bg-accent-hover text-white rounded-xl text-sm font-medium transition-all disabled:opacity-50 flex items-center justify-center gap-2 shrink-0"
         >
           {loading ? (
             <>

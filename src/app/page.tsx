@@ -2,9 +2,11 @@ import DownloadForm from '@/components/DownloadForm';
 import PlatformIcons from '@/components/PlatformIcons';
 import FAQ from '@/components/FAQ';
 import AdSlot from '@/components/AdSlot';
+import PlatformIcon from '@/components/PlatformIcon';
 import Link from 'next/link';
 import { tools } from '@/lib/tools';
 import { generateWebAppSchema, generateFAQSchema } from '@/lib/schemas';
+import type { Platform } from '@/types';
 
 const homeFaqs = [
   { question: 'What is QuicklySave?', answer: 'QuicklySave is a free online tool that lets you download videos, photos, and audio from popular social media platforms including Instagram, YouTube, TikTok, Twitter/X, and Facebook.' },
@@ -88,11 +90,9 @@ export default function HomePage() {
               >
                 <div
                   className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
-                  style={{ backgroundColor: `${tool.color}15` }}
+                  style={{ backgroundColor: `${tool.color}18` }}
                 >
-                  <span style={{ color: tool.color }} className="text-lg font-bold">
-                    {tool.platform[0].toUpperCase()}
-                  </span>
+                  <PlatformIcon platform={tool.platform as Platform} size={22} />
                 </div>
                 <div>
                   <h3 className="font-medium text-sm group-hover:text-accent transition-colors">{tool.title}</h3>

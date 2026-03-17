@@ -71,4 +71,5 @@ export interface Quality {
   format: string;
   size?: string;
   url: string;
+  directUrl?: boolean; // true = link directly (skip proxy), e.g. IP-locked YouTube URLs
 }

@@ -137,8 +137,8 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
                   {result.qualities.map((q) => (
                     <a
                       key={q.label}
-                      href={getProxyUrl(q.url, q.label)}
-                      download={`${(result.title || 'video').replace(/[^a-zA-Z0-9 _-]/g, '')}-${q.label}.${q.format}`}
+                      href={q.directUrl ? q.url : getProxyUrl(q.url, q.label)}
+                      download={q.directUrl ? undefined : `${(result.title || 'video').replace(/[^a-zA-Z0-9 _-]/g, '')}-${q.label}.${q.format}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent hover:bg-accent-hover text-white text-xs rounded-lg transition-colors"
@@ -152,6 +152,11 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
                       {q.size && <span className="opacity-70">({q.size})</span>}
                     </a>
                   ))}
+                  {result.platform === 'youtube' && (
+                    <p className="w-full text-xs text-muted mt-1">
+                      Tip: Long-press the button and select &quot;Download Linked File&quot; to save.
+                    </p>
+                  )}
                 </div>
               )}
             </div>

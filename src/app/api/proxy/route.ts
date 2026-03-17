@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const maxDuration = 60; // Allow up to 60s for large files
+export const maxDuration = 60;
+// Enable edge runtime for streaming (no 4.5MB body size limit)
+export const runtime = 'edge';
 
 export async function GET(request: NextRequest) {
   const fileUrl = request.nextUrl.searchParams.get('url');
@@ -20,17 +22,19 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    const origin = new URL(fileUrl).origin;
     const response = await fetch(fileUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Referer': new URL(fileUrl).origin + '/',
-        'Origin': new URL(fileUrl).origin,
+        'Referer': origin + '/',
+        'Origin': origin,
       },
       redirect: 'follow',
     });
 
     if (!response.ok || !response.body) {
-      return NextResponse.json({ error: 'Failed to fetch file' }, { status: 502 });
+      // If proxy fetch fails, redirect user directly to the media URL
+      return NextResponse.redirect(fileUrl);
     }
 
     const contentType = response.headers.get('content-type') || 'application/octet-stream';
@@ -44,7 +48,7 @@ export async function GET(request: NextRequest) {
 
     const safeFilename = `${filename.replace(/[^a-zA-Z0-9_-]/g, '_')}.${ext}`;
 
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/octet-stream',
       'Content-Disposition': `attachment; filename="${safeFilename}"`,
       'Cache-Control': 'no-cache',
@@ -54,8 +58,9 @@ export async function GET(request: NextRequest) {
       headers['Content-Length'] = contentLength;
     }
 
-    return new NextResponse(response.body, { headers });
+    return new Response(response.body, { headers });
   } catch {
-    return NextResponse.json({ error: 'Download failed' }, { status: 500 });
+    // On any error, redirect to the original URL as fallback
+    return NextResponse.redirect(fileUrl);
   }
 }

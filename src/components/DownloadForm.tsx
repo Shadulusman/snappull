@@ -72,63 +72,17 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
     if (e.key === 'Enter') handleSubmit();
   };
 
-  const handleDownload = async (mediaUrl: string, label: string, format: string) => {
+  const handleDownload = (mediaUrl: string, label: string) => {
     setDownloading(label);
     const filename = `${(result?.title || 'video').replace(/[^a-zA-Z0-9 _-]/g, '')}-${label}`.trim();
 
-    try {
-      // Try server proxy first (handles CORS and sets Content-Disposition)
-      const proxyUrl = `/api/proxy?url=${encodeURIComponent(mediaUrl)}&filename=${encodeURIComponent(filename)}`;
-      const res = await fetch(proxyUrl);
+    // Navigate directly to the proxy URL — the server sets Content-Disposition: attachment
+    // This works reliably on all platforms including iOS Safari
+    const proxyUrl = `/api/proxy?url=${encodeURIComponent(mediaUrl)}&filename=${encodeURIComponent(filename)}`;
+    window.location.href = proxyUrl;
 
-      if (res.ok) {
-        const contentType = res.headers.get('content-type') || '';
-        // Check if response is actually a file (not an error JSON)
-        if (!contentType.includes('application/json')) {
-          const blob = await res.blob();
-          if (blob.size > 1000) {
-            // Got a real file
-            triggerBlobDownload(blob, `${filename}.${format}`);
-            setDownloading(null);
-            return;
-          }
-        }
-      }
-
-      // Proxy failed — try direct blob fetch (works for same-origin or CORS-enabled CDNs)
-      const directRes = await fetch(mediaUrl, { mode: 'cors' }).catch(() => null);
-      if (directRes?.ok) {
-        const blob = await directRes.blob();
-        if (blob.size > 1000) {
-          triggerBlobDownload(blob, `${filename}.${format}`);
-          setDownloading(null);
-          return;
-        }
-      }
-
-      // Both failed — open in new tab as last resort (user can long-press to save on mobile)
-      window.open(mediaUrl, '_blank');
-    } catch {
-      // Last resort
-      window.open(mediaUrl, '_blank');
-    } finally {
-      setDownloading(null);
-    }
-  };
-
-  const triggerBlobDownload = (blob: Blob, filename: string) => {
-    const blobUrl = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = blobUrl;
-    a.download = filename;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    // Clean up after a short delay
-    setTimeout(() => {
-      URL.revokeObjectURL(blobUrl);
-      document.body.removeChild(a);
-    }, 1000);
+    // Reset button state after a delay (download starts in background)
+    setTimeout(() => setDownloading(null), 3000);
   };
 
   return (
@@ -192,7 +146,7 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
                   {result.qualities.map((q) => (
                     <button
                       key={q.label}
-                      onClick={() => handleDownload(q.url, q.label, q.format)}
+                      onClick={() => handleDownload(q.url, q.label)}
                       disabled={downloading === q.label}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent hover:bg-accent-hover text-white text-xs rounded-lg transition-colors disabled:opacity-60"
                     >

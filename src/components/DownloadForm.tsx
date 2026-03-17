@@ -130,22 +130,25 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
               {result.duration && <p className="text-xs text-muted mt-1">Duration: {result.duration}</p>}
               {result.qualities && result.qualities.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {result.qualities.map((q) => (
-                    <a
-                      key={q.label}
-                      href={q.url}
-                      download
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent hover:bg-accent-hover text-white text-xs rounded-lg transition-colors"
-                    >
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                        <polyline points="7 10 12 15 17 10" />
-                        <line x1="12" y1="15" x2="12" y2="3" />
-                      </svg>
-                      {q.label} {q.format.toUpperCase()}
-                      {q.size && <span className="opacity-70">({q.size})</span>}
-                    </a>
-                  ))}
+                  {result.qualities.map((q) => {
+                    const proxyUrl = `/api/proxy?url=${encodeURIComponent(q.url)}&filename=${encodeURIComponent((result.title || 'video') + '-' + q.label)}`;
+                    return (
+                      <a
+                        key={q.label}
+                        href={proxyUrl}
+                        download
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent hover:bg-accent-hover text-white text-xs rounded-lg transition-colors"
+                      >
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                          <polyline points="7 10 12 15 17 10" />
+                          <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        {q.label} {q.format.toUpperCase()}
+                        {q.size && <span className="opacity-70">({q.size})</span>}
+                      </a>
+                    );
+                  })}
                 </div>
               )}
             </div>

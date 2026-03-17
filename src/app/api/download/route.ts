@@ -20,10 +20,112 @@ function validateUrl(url: string): boolean {
   }
 }
 
-async function fetchMediaInfo(url: string, platform: Platform): Promise<DownloadResult> {
-  // Use the free cobalt.tools API for downloading
+// Primary: Social Download All In One (RapidAPI)
+async function fetchWithRapidAPI(url: string, platform: Platform): Promise<DownloadResult | null> {
+  const rapidApiKey = process.env.RAPIDAPI_KEY;
+  if (!rapidApiKey) return null;
+
   try {
-    const res = await fetch('https://api.cobalt.tools/api/json', {
+    const res = await fetch('https://social-download-all-in-one.p.rapidapi.com/v1/social/autolink', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-rapidapi-key': rapidApiKey,
+        'x-rapidapi-host': 'social-download-all-in-one.p.rapidapi.com',
+      },
+      body: JSON.stringify({ url }),
+    });
+
+    if (!res.ok) return null;
+
+    const data = await res.json();
+
+    // Handle different response structures
+    if (data.medias && data.medias.length > 0) {
+      return {
+        success: true,
+        platform,
+        title: data.title || `${capitalize(platform)} Video`,
+        thumbnail: data.thumbnail || undefined,
+        duration: data.duration ? formatDuration(data.duration) : undefined,
+        qualities: data.medias
+          .filter((m: { url?: string }) => m.url)
+          .slice(0, 6)
+          .map((m: { quality?: string; url: string; extension?: string; formattedSize?: string; type?: string }) => ({
+            label: m.quality || m.type || 'Download',
+            format: m.extension || (m.type === 'audio' ? 'mp3' : 'mp4'),
+            size: m.formattedSize || undefined,
+            url: m.url,
+          })),
+      };
+    }
+
+    // Some responses have a direct URL
+    if (data.url) {
+      return {
+        success: true,
+        platform,
+        title: data.title || `${capitalize(platform)} Video`,
+        thumbnail: data.thumbnail || undefined,
+        qualities: [
+          { label: 'Download', format: 'mp4', url: data.url },
+        ],
+      };
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+// Secondary: SMVD API (RapidAPI)
+async function fetchWithSMVD(url: string, platform: Platform): Promise<DownloadResult | null> {
+  const rapidApiKey = process.env.RAPIDAPI_KEY;
+  if (!rapidApiKey) return null;
+
+  try {
+    const apiUrl = `https://social-media-video-downloader.p.rapidapi.com/smvd/get/all?url=${encodeURIComponent(url)}`;
+    const res = await fetch(apiUrl, {
+      headers: {
+        'X-RapidAPI-Key': rapidApiKey,
+        'X-RapidAPI-Host': 'social-media-video-downloader.p.rapidapi.com',
+      },
+    });
+
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    if (data.success && data.links && data.links.length > 0) {
+      return {
+        success: true,
+        platform,
+        title: data.title || `${capitalize(platform)} Video`,
+        thumbnail: data.picture || undefined,
+        duration: data.duration || undefined,
+        qualities: data.links
+          .filter((l: { link: string }) => l.link)
+          .slice(0, 5)
+          .map((l: { quality: string; link: string; mimeType?: string }) => ({
+            label: l.quality || 'Download',
+            format: l.mimeType?.includes('audio') ? 'mp3' : 'mp4',
+            url: l.link,
+          })),
+      };
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+// Tertiary: Cobalt API (self-hosted or public instance)
+async function fetchWithCobalt(url: string, platform: Platform): Promise<DownloadResult | null> {
+  const cobaltUrl = process.env.COBALT_API_URL || 'https://api.cobalt.tools';
+
+  try {
+    const res = await fetch(cobaltUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,27 +133,20 @@ async function fetchMediaInfo(url: string, platform: Platform): Promise<Download
       },
       body: JSON.stringify({
         url,
-        vCodec: 'h264',
-        vQuality: '1080',
-        aFormat: 'mp3',
-        isAudioOnly: false,
-        filenamePattern: 'basic',
+        videoQuality: '1080',
+        audioFormat: 'mp3',
       }),
     });
 
-    if (!res.ok) {
-      // Fallback: try allsave API
-      return await fetchWithAllSave(url, platform);
-    }
+    if (!res.ok) return null;
 
     const data = await res.json();
 
-    if (data.status === 'stream' || data.status === 'redirect') {
+    if (data.status === 'tunnel' || data.status === 'redirect') {
       return {
         success: true,
         platform,
-        title: `${platform.charAt(0).toUpperCase() + platform.slice(1)} Video`,
-        thumbnail: data.thumb || undefined,
+        title: data.filename || `${capitalize(platform)} Video`,
         qualities: [
           { label: 'Download', format: 'mp4', url: data.url },
         ],
@@ -62,71 +157,32 @@ async function fetchMediaInfo(url: string, platform: Platform): Promise<Download
       return {
         success: true,
         platform,
-        title: `${platform.charAt(0).toUpperCase() + platform.slice(1)} Media`,
+        title: `${capitalize(platform)} Media`,
         thumbnail: data.picker[0]?.thumb || undefined,
-        qualities: data.picker.map((item: { url: string; thumb?: string }, i: number) => ({
-          label: `Item ${i + 1}`,
-          format: item.url?.includes('.mp4') ? 'mp4' : 'jpg',
-          url: item.url,
-        })),
+        qualities: data.picker
+          .slice(0, 6)
+          .map((item: { url: string; thumb?: string }, i: number) => ({
+            label: `Item ${i + 1}`,
+            format: item.url?.includes('.mp4') ? 'mp4' : 'jpg',
+            url: item.url,
+          })),
       };
     }
 
-    return await fetchWithAllSave(url, platform);
+    return null;
   } catch {
-    return await fetchWithAllSave(url, platform);
+    return null;
   }
 }
 
-async function fetchWithAllSave(url: string, platform: Platform): Promise<DownloadResult> {
-  try {
-    // Use a second free API as fallback
-    const apiUrl = `https://social-media-video-downloader.p.rapidapi.com/smvd/get/all?url=${encodeURIComponent(url)}`;
-    const rapidApiKey = process.env.RAPIDAPI_KEY;
+function capitalize(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
 
-    if (rapidApiKey) {
-      const res = await fetch(apiUrl, {
-        headers: {
-          'X-RapidAPI-Key': rapidApiKey,
-          'X-RapidAPI-Host': 'social-media-video-downloader.p.rapidapi.com',
-        },
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success && data.links && data.links.length > 0) {
-          return {
-            success: true,
-            platform,
-            title: data.title || `${platform.charAt(0).toUpperCase() + platform.slice(1)} Video`,
-            thumbnail: data.picture || undefined,
-            duration: data.duration || undefined,
-            qualities: data.links
-              .filter((l: { link: string }) => l.link)
-              .slice(0, 5)
-              .map((l: { quality: string; link: string; mimeType?: string }) => ({
-                label: l.quality || 'Download',
-                format: l.mimeType?.includes('audio') ? 'mp3' : 'mp4',
-                url: l.link,
-              })),
-          };
-        }
-      }
-    }
-
-    // Final fallback: return a helpful message
-    return {
-      success: false,
-      platform,
-      error: 'Unable to fetch this video right now. Please try again in a moment or try a different link.',
-    };
-  } catch {
-    return {
-      success: false,
-      platform,
-      error: 'Unable to fetch this video right now. Please try again in a moment.',
-    };
-  }
+function formatDuration(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
 }
 
 export async function POST(request: NextRequest) {
@@ -157,8 +213,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await fetchMediaInfo(url, platform);
-    return NextResponse.json(result);
+    // Try APIs in order: RapidAPI primary → SMVD fallback → Cobalt fallback
+    const result =
+      (await fetchWithRapidAPI(url, platform)) ||
+      (await fetchWithSMVD(url, platform)) ||
+      (await fetchWithCobalt(url, platform));
+
+    if (result) {
+      return NextResponse.json(result);
+    }
+
+    // All APIs failed
+    const hasApiKey = !!process.env.RAPIDAPI_KEY;
+    return NextResponse.json({
+      success: false,
+      platform,
+      error: hasApiKey
+        ? 'Unable to fetch this video. The link may be private or expired. Please try a different link.'
+        : 'Download service is not configured. Please add your RAPIDAPI_KEY in environment variables.',
+    } satisfies DownloadResult);
   } catch {
     return NextResponse.json(
       { success: false, platform: null, error: 'Internal server error' } satisfies DownloadResult,

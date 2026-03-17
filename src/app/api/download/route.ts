@@ -42,10 +42,6 @@ async function fetchWithRapidAPI(url: string, platform: Platform): Promise<Downl
 
     // Handle different response structures
     if (data.medias && data.medias.length > 0) {
-      // YouTube URLs from googlevideo.com are IP-locked to the requesting client
-      // They cannot be proxied — must be downloaded directly by the user's browser
-      const isDirectOnly = platform === 'youtube';
-
       return {
         success: true,
         platform,
@@ -60,7 +56,6 @@ async function fetchWithRapidAPI(url: string, platform: Platform): Promise<Downl
             format: m.extension || (m.type === 'audio' ? 'mp3' : 'mp4'),
             size: m.formattedSize || undefined,
             url: m.url,
-            directUrl: isDirectOnly,
           })),
       };
     }

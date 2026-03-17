@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const maxDuration = 60;
-// Enable edge runtime for streaming (no 4.5MB body size limit)
 export const runtime = 'edge';
 
 export async function GET(request: NextRequest) {
@@ -9,16 +8,16 @@ export async function GET(request: NextRequest) {
   const filename = request.nextUrl.searchParams.get('filename') || 'download';
 
   if (!fileUrl) {
-    return NextResponse.json({ error: 'Missing url parameter' }, { status: 400 });
+    return new Response('Missing url parameter', { status: 400 });
   }
 
   try {
     const parsed = new URL(fileUrl);
     if (!['http:', 'https:'].includes(parsed.protocol)) {
-      return NextResponse.json({ error: 'Invalid URL' }, { status: 400 });
+      return new Response('Invalid URL', { status: 400 });
     }
   } catch {
-    return NextResponse.json({ error: 'Invalid URL' }, { status: 400 });
+    return new Response('Invalid URL', { status: 400 });
   }
 
   try {
@@ -33,11 +32,16 @@ export async function GET(request: NextRequest) {
     });
 
     if (!response.ok || !response.body) {
-      // If proxy fetch fails, redirect user directly to the media URL
-      return NextResponse.redirect(fileUrl);
+      return new Response('Failed to fetch file', { status: 502 });
     }
 
     const contentType = response.headers.get('content-type') || 'application/octet-stream';
+
+    // Detect if the response is HTML (error page) instead of actual media
+    if (contentType.includes('text/html')) {
+      return new Response('Failed to fetch file', { status: 502 });
+    }
+
     const contentLength = response.headers.get('content-length');
 
     let ext = 'mp4';
@@ -60,7 +64,6 @@ export async function GET(request: NextRequest) {
 
     return new Response(response.body, { headers });
   } catch {
-    // On any error, redirect to the original URL as fallback
-    return NextResponse.redirect(fileUrl);
+    return new Response('Failed to fetch file', { status: 502 });
   }
 }

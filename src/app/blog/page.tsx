@@ -5,7 +5,7 @@ import { blogPosts } from '@/lib/blog-data';
 export const metadata: Metadata = {
   title: 'Blog - Video Download Guides & Tips',
   description: 'Learn how to download videos from Instagram, YouTube, TikTok, and more. Guides, tips, and best practices for saving social media content.',
-  alternates: { canonical: 'https://snappull.com/blog' },
+  alternates: { canonical: 'https://quicklysave.com/blog' },
 };
 
 export default function BlogPage() {

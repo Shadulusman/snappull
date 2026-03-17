@@ -47,11 +47,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      url: `https://snappull.com/${slug}`,
+      url: `https://quicklysave.com/${slug}`,
       type: 'website',
     },
     twitter: { card: 'summary_large_image', title, description },
-    alternates: { canonical: `https://snappull.com/${slug}` },
+    alternates: { canonical: `https://quicklysave.com/${slug}` },
   };
 }
 
@@ -66,10 +66,10 @@ export default async function ToolPage({ params }: Props) {
 
   const faqSchema = generateFAQSchema(tool.faqs);
   const howToSchema = generateHowToSchema(`How to use ${tool.title}`, tool.steps);
-  const webAppSchema = generateWebAppSchema(tool.title, tool.description, `https://snappull.com/${slug}`);
+  const webAppSchema = generateWebAppSchema(tool.title, tool.description, `https://quicklysave.com/${slug}`);
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: 'https://snappull.com' },
-    { name: heading, url: `https://snappull.com/${slug}` },
+    { name: 'Home', url: 'https://quicklysave.com' },
+    { name: heading, url: `https://quicklysave.com/${slug}` },
   ]);
 
   const relatedTools = tools.filter((t) => t.slug !== tool.slug && t.platform === tool.platform);

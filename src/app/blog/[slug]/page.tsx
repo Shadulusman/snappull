@@ -26,12 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: post.metaTitle,
       description: post.metaDescription,
-      url: `https://snappull.com/blog/${slug}`,
+      url: `https://quicklysave.com/blog/${slug}`,
       type: 'article',
       publishedTime: post.date,
     },
     twitter: { card: 'summary_large_image', title: post.metaTitle, description: post.metaDescription },
-    alternates: { canonical: `https://snappull.com/blog/${slug}` },
+    alternates: { canonical: `https://quicklysave.com/blog/${slug}` },
   };
 }
 
@@ -60,13 +60,13 @@ export default async function BlogPostPage({ params }: Props) {
   const articleSchema = generateArticleSchema(
     post.title,
     post.metaDescription,
-    `https://snappull.com/blog/${slug}`,
+    `https://quicklysave.com/blog/${slug}`,
     post.date,
   );
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: 'https://snappull.com' },
-    { name: 'Blog', url: 'https://snappull.com/blog' },
-    { name: post.title, url: `https://snappull.com/blog/${slug}` },
+    { name: 'Home', url: 'https://quicklysave.com' },
+    { name: 'Blog', url: 'https://quicklysave.com/blog' },
+    { name: post.title, url: `https://quicklysave.com/blog/${slug}` },
   ]);
 
   // Get recent posts for sidebar

@@ -14,26 +14,26 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://snappull.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://quicklysave.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'SnapPull - Free Social Media Video Downloader',
-    template: '%s | SnapPull',
+    default: 'QuicklySave - Free Social Media Video Downloader',
+    template: '%s | QuicklySave',
   },
   description: 'Download videos from Instagram, YouTube, TikTok, Twitter/X, and Facebook for free. Save social media content in HD quality.',
   keywords: ['video downloader', 'instagram downloader', 'youtube downloader', 'tiktok downloader', 'social media downloader'],
   openGraph: {
     type: 'website',
-    siteName: 'SnapPull',
-    title: 'SnapPull - Free Social Media Video Downloader',
+    siteName: 'QuicklySave',
+    title: 'QuicklySave - Free Social Media Video Downloader',
     description: 'Download videos from Instagram, YouTube, TikTok, Twitter/X, and Facebook for free.',
     url: SITE_URL,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SnapPull - Free Social Media Video Downloader',
+    title: 'QuicklySave - Free Social Media Video Downloader',
     description: 'Download videos from Instagram, YouTube, TikTok, Twitter/X, and Facebook for free.',
   },
   robots: {
@@ -46,6 +46,16 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: SITE_URL,
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '32x32' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
 };
 

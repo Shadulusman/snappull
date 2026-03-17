@@ -4,7 +4,7 @@ export const seoPages: SEOPage[] = [
   {
     slug: 'download-instagram-reels',
     title: 'Download Instagram Reels',
-    metaTitle: 'Download Instagram Reels Online Free - HD Quality | SnapPull',
+    metaTitle: 'Download Instagram Reels Online Free - HD Quality | QuicklySave',
     metaDescription: 'Download Instagram Reels online for free in HD quality. The fastest and easiest way to save Instagram Reels to your device.',
     heading: 'Download Instagram Reels Online',
     subheading: 'The fastest free tool to save Instagram Reels in HD quality. No login required.',
@@ -14,7 +14,7 @@ export const seoPages: SEOPage[] = [
   {
     slug: 'download-youtube-video',
     title: 'Download YouTube Video',
-    metaTitle: 'Download YouTube Video Online Free - HD/4K | SnapPull',
+    metaTitle: 'Download YouTube Video Online Free - HD/4K | QuicklySave',
     metaDescription: 'Download YouTube videos online for free in HD and 4K quality. Save any YouTube video for offline viewing.',
     heading: 'Download YouTube Video Online',
     subheading: 'Save any YouTube video in HD or 4K quality. Fast, free, and no registration needed.',
@@ -24,7 +24,7 @@ export const seoPages: SEOPage[] = [
   {
     slug: 'download-tiktok-video',
     title: 'Download TikTok Video',
-    metaTitle: 'Download TikTok Video Online Free - HD Quality | SnapPull',
+    metaTitle: 'Download TikTok Video Online Free - HD Quality | QuicklySave',
     metaDescription: 'Download TikTok videos online for free in HD quality. Save any TikTok to your phone or computer instantly.',
     heading: 'Download TikTok Video Online',
     subheading: 'Save TikTok videos in HD quality. Free, fast, and works on all devices.',
@@ -34,7 +34,7 @@ export const seoPages: SEOPage[] = [
   {
     slug: 'save-instagram-reels',
     title: 'Save Instagram Reels',
-    metaTitle: 'Save Instagram Reels to Phone & PC Free | SnapPull',
+    metaTitle: 'Save Instagram Reels to Phone & PC Free | QuicklySave',
     metaDescription: 'Save Instagram Reels to your phone or PC for free. Download Reels in original HD quality with one click.',
     heading: 'Save Instagram Reels to Your Device',
     subheading: 'One-click solution to save any Instagram Reel to your phone or computer in HD.',
@@ -44,7 +44,7 @@ export const seoPages: SEOPage[] = [
   {
     slug: 'youtube-video-download-online',
     title: 'YouTube Video Download Online',
-    metaTitle: 'YouTube Video Download Online Free - No Software | SnapPull',
+    metaTitle: 'YouTube Video Download Online Free - No Software | QuicklySave',
     metaDescription: 'Download YouTube videos online without installing any software. Free HD video downloads from YouTube.',
     heading: 'YouTube Video Download Online',
     subheading: 'No software needed. Download YouTube videos directly from your browser for free.',
@@ -54,8 +54,8 @@ export const seoPages: SEOPage[] = [
   {
     slug: 'tiktok-download-without-watermark',
     title: 'TikTok Download Without Watermark',
-    metaTitle: 'TikTok Download Without Watermark Free - HD | SnapPull',
-    metaDescription: 'Download TikTok videos without watermark in HD quality. Get clean TikTok videos for free with SnapPull.',
+    metaTitle: 'TikTok Download Without Watermark Free - HD | QuicklySave',
+    metaDescription: 'Download TikTok videos without watermark in HD quality. Get clean TikTok videos for free with QuicklySave.',
     heading: 'Download TikTok Without Watermark',
     subheading: 'Get clean TikTok videos without the watermark. HD quality, completely free.',
     toolSlug: 'tiktok-no-watermark-downloader',
@@ -64,7 +64,7 @@ export const seoPages: SEOPage[] = [
   {
     slug: 'free-instagram-video-downloader',
     title: 'Free Instagram Video Downloader',
-    metaTitle: 'Free Instagram Video Downloader Online - HD | SnapPull',
+    metaTitle: 'Free Instagram Video Downloader Online - HD | QuicklySave',
     metaDescription: 'Free Instagram video downloader. Save Instagram videos in HD quality without any cost or registration.',
     heading: 'Free Instagram Video Downloader',
     subheading: 'Download Instagram videos for free. No registration, no limits, HD quality.',
@@ -74,7 +74,7 @@ export const seoPages: SEOPage[] = [
   {
     slug: 'hd-video-downloader-online',
     title: 'HD Video Downloader Online',
-    metaTitle: 'HD Video Downloader Online Free - All Platforms | SnapPull',
+    metaTitle: 'HD Video Downloader Online Free - All Platforms | QuicklySave',
     metaDescription: 'Download HD videos from Instagram, YouTube, TikTok, Twitter, and Facebook. Free online HD video downloader.',
     heading: 'HD Video Downloader Online',
     subheading: 'Download HD videos from all major social media platforms. Fast, free, and easy.',
@@ -84,7 +84,7 @@ export const seoPages: SEOPage[] = [
   {
     slug: 'twitter-video-download-free',
     title: 'Twitter Video Download Free',
-    metaTitle: 'Twitter/X Video Download Free Online - HD | SnapPull',
+    metaTitle: 'Twitter/X Video Download Free Online - HD | QuicklySave',
     metaDescription: 'Download Twitter/X videos for free in HD quality. Save any tweet video or GIF to your device online.',
     heading: 'Download Twitter Videos Free',
     subheading: 'Save Twitter/X videos and GIFs to your device. Free, fast, and in HD quality.',
@@ -94,7 +94,7 @@ export const seoPages: SEOPage[] = [
   {
     slug: 'facebook-video-download-free',
     title: 'Facebook Video Download Free',
-    metaTitle: 'Facebook Video Download Free Online - HD | SnapPull',
+    metaTitle: 'Facebook Video Download Free Online - HD | QuicklySave',
     metaDescription: 'Download Facebook videos for free in HD quality. Save any Facebook video to your device online.',
     heading: 'Download Facebook Videos Free',
     subheading: 'Save Facebook videos and Reels to your device. Free, fast, and in HD quality.',
@@ -104,7 +104,7 @@ export const seoPages: SEOPage[] = [
   {
     slug: 'youtube-to-mp3-converter-free',
     title: 'YouTube to MP3 Converter Free',
-    metaTitle: 'YouTube to MP3 Converter Free Online - 320kbps | SnapPull',
+    metaTitle: 'YouTube to MP3 Converter Free Online - 320kbps | QuicklySave',
     metaDescription: 'Convert YouTube videos to MP3 for free. High-quality 320kbps audio conversion online.',
     heading: 'Free YouTube to MP3 Converter',
     subheading: 'Convert any YouTube video to high-quality MP3 audio. Free and instant.',
@@ -114,7 +114,7 @@ export const seoPages: SEOPage[] = [
   {
     slug: 'instagram-reel-saver',
     title: 'Instagram Reel Saver',
-    metaTitle: 'Instagram Reel Saver - Save Reels to Gallery Free | SnapPull',
+    metaTitle: 'Instagram Reel Saver - Save Reels to Gallery Free | QuicklySave',
     metaDescription: 'Save Instagram Reels to your gallery or camera roll. Free Instagram Reel saver tool online.',
     heading: 'Instagram Reel Saver',
     subheading: 'Save any Instagram Reel directly to your gallery. Free and instant.',
@@ -124,7 +124,7 @@ export const seoPages: SEOPage[] = [
   {
     slug: 'social-media-video-downloader',
     title: 'Social Media Video Downloader',
-    metaTitle: 'Social Media Video Downloader - All Platforms Free | SnapPull',
+    metaTitle: 'Social Media Video Downloader - All Platforms Free | QuicklySave',
     metaDescription: 'Download videos from all social media platforms. Instagram, YouTube, TikTok, Twitter, Facebook. Free online tool.',
     heading: 'Social Media Video Downloader',
     subheading: 'One tool for all platforms. Download videos from Instagram, YouTube, TikTok, Twitter, and Facebook.',
@@ -134,7 +134,7 @@ export const seoPages: SEOPage[] = [
   {
     slug: 'free-video-downloader-online',
     title: 'Free Video Downloader Online',
-    metaTitle: 'Free Video Downloader Online - All Social Media | SnapPull',
+    metaTitle: 'Free Video Downloader Online - All Social Media | QuicklySave',
     metaDescription: 'Free online video downloader for all social media platforms. Download HD videos without registration.',
     heading: 'Free Video Downloader Online',
     subheading: 'Download videos from any social media platform for free. No registration needed.',
@@ -144,7 +144,7 @@ export const seoPages: SEOPage[] = [
   {
     slug: 'instagram-audio-downloader',
     title: 'Instagram Audio Downloader',
-    metaTitle: 'Instagram Audio Downloader - Extract Audio MP3 | SnapPull',
+    metaTitle: 'Instagram Audio Downloader - Extract Audio MP3 | QuicklySave',
     metaDescription: 'Download audio from Instagram Reels and videos. Extract and save audio as MP3 files for free.',
     heading: 'Instagram Audio Downloader',
     subheading: 'Extract audio from Instagram videos and Reels. Save as high-quality MP3.',

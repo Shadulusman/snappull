@@ -7,12 +7,12 @@ import { tools } from '@/lib/tools';
 import { generateWebAppSchema, generateFAQSchema } from '@/lib/schemas';
 
 const homeFaqs = [
-  { question: 'What is SnapPull?', answer: 'SnapPull is a free online tool that lets you download videos, photos, and audio from popular social media platforms including Instagram, YouTube, TikTok, Twitter/X, and Facebook.' },
-  { question: 'Is SnapPull free to use?', answer: 'Yes, SnapPull is completely free. There are no hidden fees, subscriptions, or premium tiers. All features are available to everyone.' },
-  { question: 'Do I need to install anything?', answer: 'No. SnapPull works entirely in your browser. There is no app or software to install.' },
-  { question: 'What platforms are supported?', answer: 'SnapPull supports Instagram (Reels, videos, photos, audio), YouTube (videos, MP3), TikTok (with and without watermark), Twitter/X, and Facebook.' },
-  { question: 'Is it safe to use SnapPull?', answer: 'Absolutely. SnapPull does not require any login credentials or personal information. Your downloads are processed securely.' },
-  { question: 'Can I use SnapPull on my phone?', answer: 'Yes, SnapPull is fully responsive and works perfectly on iPhone, Android, tablets, and desktop computers.' },
+  { question: 'What is QuicklySave?', answer: 'QuicklySave is a free online tool that lets you download videos, photos, and audio from popular social media platforms including Instagram, YouTube, TikTok, Twitter/X, and Facebook.' },
+  { question: 'Is QuicklySave free to use?', answer: 'Yes, QuicklySave is completely free. There are no hidden fees, subscriptions, or premium tiers. All features are available to everyone.' },
+  { question: 'Do I need to install anything?', answer: 'No. QuicklySave works entirely in your browser. There is no app or software to install.' },
+  { question: 'What platforms are supported?', answer: 'QuicklySave supports Instagram (Reels, videos, photos, audio), YouTube (videos, MP3), TikTok (with and without watermark), Twitter/X, and Facebook.' },
+  { question: 'Is it safe to use QuicklySave?', answer: 'Absolutely. QuicklySave does not require any login credentials or personal information. Your downloads are processed securely.' },
+  { question: 'Can I use QuicklySave on my phone?', answer: 'Yes, QuicklySave is fully responsive and works perfectly on iPhone, Android, tablets, and desktop computers.' },
 ];
 
 const features = [
@@ -24,9 +24,9 @@ const features = [
 
 export default function HomePage() {
   const webAppSchema = generateWebAppSchema(
-    'SnapPull',
+    'QuicklySave',
     'Free social media video downloader for Instagram, YouTube, TikTok, Twitter, and Facebook',
-    'https://snappull.com',
+    'https://quicklysave.com',
   );
   const faqSchema = generateFAQSchema(homeFaqs);
 
@@ -62,7 +62,7 @@ export default function HomePage() {
       {/* Features */}
       <section className="py-16 px-4 bg-card/50">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-semibold text-center mb-10">Why Choose SnapPull</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold text-center mb-10">Why Choose QuicklySave</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {features.map((f) => (
               <div key={f.title} className="text-center">

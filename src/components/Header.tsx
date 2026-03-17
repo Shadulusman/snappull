@@ -10,8 +10,16 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
       <nav className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link href="/" className="text-xl font-semibold tracking-tight">
-          Snap<span className="text-accent">Pull</span>
+        <Link href="/" className="text-xl font-semibold tracking-tight flex items-center gap-2">
+          <svg width="24" height="24" viewBox="0 0 512 512" className="shrink-0">
+            <rect width="512" height="512" rx="108" fill="currentColor" className="text-accent"/>
+            <g transform="translate(256,240)">
+              <line x1="0" y1="-100" x2="0" y2="80" stroke="white" strokeWidth="48" strokeLinecap="round"/>
+              <polyline points="-70,20 0,90 70,20" fill="none" stroke="white" strokeWidth="48" strokeLinecap="round" strokeLinejoin="round"/>
+            </g>
+            <line x1="136" y1="380" x2="376" y2="380" stroke="white" strokeWidth="48" strokeLinecap="round"/>
+          </svg>
+          Quickly<span className="text-accent">Save</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-6 text-sm">

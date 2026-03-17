@@ -74,11 +74,11 @@ export function generateArticleSchema(
     datePublished,
     author: {
       '@type': 'Organization',
-      name: 'SnapPull',
+      name: 'QuicklySave',
     },
     publisher: {
       '@type': 'Organization',
-      name: 'SnapPull',
+      name: 'QuicklySave',
     },
   };
 }

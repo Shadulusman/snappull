@@ -38,7 +38,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-10 pt-6 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted">
-          <p>&copy; {new Date().getFullYear()} SnapPull. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} QuicklySave. All rights reserved.</p>
           <div className="flex gap-4">
             <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>

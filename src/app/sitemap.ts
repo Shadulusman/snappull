@@ -3,7 +3,7 @@ import { tools } from '@/lib/tools';
 import { seoPages } from '@/lib/seo-pages';
 import { blogPosts } from '@/lib/blog-data';
 
-const BASE_URL = 'https://snappull.com';
+const BASE_URL = 'https://quicklysave.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date().toISOString();

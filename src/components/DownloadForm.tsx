@@ -13,7 +13,6 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<DownloadResult | null>(null);
   const [error, setError] = useState('');
-  const [downloading, setDownloading] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const submitUrl = useCallback(async (inputUrl: string) => {
@@ -72,17 +71,9 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
     if (e.key === 'Enter') handleSubmit();
   };
 
-  const handleDownload = (mediaUrl: string, label: string) => {
-    setDownloading(label);
+  const getProxyUrl = (mediaUrl: string, label: string) => {
     const filename = `${(result?.title || 'video').replace(/[^a-zA-Z0-9 _-]/g, '')}-${label}`.trim();
-
-    // Navigate directly to the proxy URL — the server sets Content-Disposition: attachment
-    // This works reliably on all platforms including iOS Safari
-    const proxyUrl = `/api/proxy?url=${encodeURIComponent(mediaUrl)}&filename=${encodeURIComponent(filename)}`;
-    window.location.href = proxyUrl;
-
-    // Reset button state after a delay (download starts in background)
-    setTimeout(() => setDownloading(null), 3000);
+    return `/api/proxy?url=${encodeURIComponent(mediaUrl)}&filename=${encodeURIComponent(filename)}`;
   };
 
   return (
@@ -144,26 +135,22 @@ export default function DownloadForm({ placeholder = 'Paste your video link here
               {result.qualities && result.qualities.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2">
                   {result.qualities.map((q) => (
-                    <button
+                    <a
                       key={q.label}
-                      onClick={() => handleDownload(q.url, q.label)}
-                      disabled={downloading === q.label}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent hover:bg-accent-hover text-white text-xs rounded-lg transition-colors disabled:opacity-60"
+                      href={getProxyUrl(q.url, q.label)}
+                      download={`${(result.title || 'video').replace(/[^a-zA-Z0-9 _-]/g, '')}-${q.label}.${q.format}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent hover:bg-accent-hover text-white text-xs rounded-lg transition-colors"
                     >
-                      {downloading === q.label ? (
-                        <svg className="animate-spin w-3 h-3" viewBox="0 0 24 24" fill="none">
-                          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="32" strokeLinecap="round" />
-                        </svg>
-                      ) : (
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                          <polyline points="7 10 12 15 17 10" />
-                          <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                      )}
-                      {downloading === q.label ? 'Saving...' : `${q.label} ${q.format.toUpperCase()}`}
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                      </svg>
+                      {q.label} {q.format.toUpperCase()}
                       {q.size && <span className="opacity-70">({q.size})</span>}
-                    </button>
+                    </a>
                   ))}
                 </div>
               )}
